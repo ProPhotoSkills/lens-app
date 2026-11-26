@@ -6,13 +6,14 @@
 //   - Tipps nummeriert, optional mit Link (Books-Kapitel / Artikel) – in einer Android-Hülle ohne Link
 // Font-Awesome-Namen aus dem Tor (tips[].icon = fa-…) werden auf lucide umgesetzt.
 import {
-  Aperture, ArrowUpRight, BookOpen, Bot, Camera, CircleDot, Compass, Contrast, Crop, Eye, Filter, Footprints, Gauge, Grid3x3,
+  Aperture, ArrowUpRight, Flag, BookOpen, Bot, Camera, CircleDot, Compass, Contrast, Crop, Eye, Filter, Footprints, Gauge, Grid3x3,
   Layers, Lightbulb, MapPin, Moon, Palette, Quote, Ruler, SlidersHorizontal, Sun, Target, Timer, TrendingUp, Trophy, type LucideIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { KARTE } from "@/components/rahmen";
-import { useIstApp } from "@/lib/app-umgebung";
+import { ANDROID_OHNE } from "@/lib/android-schalter";
+import { useNurImBrowser } from "@/lib/app-umgebung";
 import { berechneHistogramm, clippingMaske, type Histogramm } from "@/lib/histogramm";
 import { useI18n } from "@/lib/i18n";
 import { gueltigeMarker, KATS, PRESETS, sichererLink, stufe, type Ergebnis, type Exif, type Kat, type Marker } from "@/lib/lens";
@@ -46,7 +47,7 @@ export function Ring({ wert, gross = true }: { wert: number; gross?: boolean }) 
 /** Rechte Spalte: Note, Kategorien, Fazit, Tipps, Look */
 export function Bewertung({ e }: { e: Ergebnis }) {
   const { t } = useI18n();
-  const app = useIstApp();
+  const linksErlaubt = useNurImBrowser() || !ANDROID_OHNE.lektionLinks;
   const sortiert = [...KATS].sort((a, b) => e.scores[b] - e.scores[a]);
   const beste = sortiert[0];
   const schwaechste = sortiert[sortiert.length - 1];
@@ -107,7 +108,7 @@ export function Bewertung({ e }: { e: Ergebnis }) {
         <div className={UEBER}>{t("score.tips")}</div>
         {e.tips.map((tip, i) => {
           const Icon = ICONS[tip.icon] ?? Lightbulb;
-          const link = app ? undefined : sichererLink(tip.link);
+          const link = linksErlaubt ? sichererLink(tip.link) : undefined;
           return (
             <div key={i} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <div className="flex items-start gap-3">
@@ -149,6 +150,14 @@ export function Bewertung({ e }: { e: Ergebnis }) {
           <p className="mt-1 text-xs text-stone-600">{t("score.presetSoon")}</p>
         </div>
       )}
+
+      {/* v6: Google Play (KI-Inhalte) – Nutzer müssen eine KI-Antwort melden können */}
+      <a
+        href={`mailto:support@prophotoskills.com?subject=${encodeURIComponent(t("report.subject"))}&body=${encodeURIComponent(t("report.body", { id: e.id ?? "-" }))}`}
+        className="inline-flex items-center gap-1.5 text-xs text-stone-500 underline underline-offset-2 hover:text-stone-800"
+      >
+        <Flag className="h-3.5 w-3.5" /> {t("report.link")}
+      </a>
     </div>
   );
 }

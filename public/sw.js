@@ -1,11 +1,11 @@
-// Service Worker für PPS Lens (lens-app v5) – macht die App installierbar und zeigt ohne Netz eine Hinweisseite.
+// Service Worker für PPS Lens (lens-app v5, Cache-Name ab v7 mit Versionsnummer) – macht die App installierbar und zeigt ohne Netz eine Hinweisseite.
 // Bewusst schlicht:
 //   - Seiten (Navigation): immer zuerst aus dem Netz, nur ohne Netz die Offline-Seite
 //   - /assets/ (Dateinamen mit Hash), Icons, Flaggen: aus dem Zwischenspeicher, sonst Netz
 //   - Anfragen an andere Adressen (lens-gate, Supabase, OpenAI …) fasst er NIE an → keine Fotos, Bewertungen
 //     oder Anmeldedaten im Zwischenspeicher
 // Neue Fassung: CACHE hochzählen, dann werden alte Zwischenspeicher gelöscht.
-const CACHE = "pps-lens-v5";
+const CACHE = "pps-lens-v7";
 const OFFLINE = "/offline"; // Cloudflare liefert offline.html unter /offline aus (ohne .html, sonst Umleitung)
 const VORAB = [OFFLINE, "/icon-192.png", "/icon-512.png", "/favicon-32x32.png", "/assets/photoskills-logo.png"];
 

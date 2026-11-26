@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnmeldenRouteImport } from './routes/anmelden'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
+import { Route as KontoLoeschenRouteImport } from './routes/konto-loeschen'
 import { Route as NutzungsbedingungenRouteImport } from './routes/nutzungsbedingungen'
 import { Route as PasswortRouteImport } from './routes/passwort'
 import { Route as RegistrierenRouteImport } from './routes/registrieren'
@@ -30,6 +31,11 @@ const AnmeldenRoute = AnmeldenRouteImport.update({
 const DatenschutzRoute = DatenschutzRouteImport.update({
   id: '/datenschutz',
   path: '/datenschutz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontoLoeschenRoute = KontoLoeschenRouteImport.update({
+  id: '/konto-loeschen',
+  path: '/konto-loeschen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NutzungsbedingungenRoute = NutzungsbedingungenRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/konto-loeschen': typeof KontoLoeschenRoute
   '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/konto-loeschen': typeof KontoLoeschenRoute
   '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/konto-loeschen': typeof KontoLoeschenRoute
   '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anmelden'
     | '/datenschutz'
+    | '/konto-loeschen'
     | '/nutzungsbedingungen'
     | '/passwort'
     | '/registrieren'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anmelden'
     | '/datenschutz'
+    | '/konto-loeschen'
     | '/nutzungsbedingungen'
     | '/passwort'
     | '/registrieren'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anmelden'
     | '/datenschutz'
+    | '/konto-loeschen'
     | '/nutzungsbedingungen'
     | '/passwort'
     | '/registrieren'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnmeldenRoute: typeof AnmeldenRoute
   DatenschutzRoute: typeof DatenschutzRoute
+  KontoLoeschenRoute: typeof KontoLoeschenRoute
   NutzungsbedingungenRoute: typeof NutzungsbedingungenRoute
   PasswortRoute: typeof PasswortRoute
   RegistrierenRoute: typeof RegistrierenRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/datenschutz'
       fullPath: '/datenschutz'
       preLoaderRoute: typeof DatenschutzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/konto-loeschen': {
+      id: '/konto-loeschen'
+      path: '/konto-loeschen'
+      fullPath: '/konto-loeschen'
+      preLoaderRoute: typeof KontoLoeschenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nutzungsbedingungen': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnmeldenRoute: AnmeldenRoute,
   DatenschutzRoute: DatenschutzRoute,
+  KontoLoeschenRoute: KontoLoeschenRoute,
   NutzungsbedingungenRoute: NutzungsbedingungenRoute,
   PasswortRoute: PasswortRoute,
   RegistrierenRoute: RegistrierenRoute,

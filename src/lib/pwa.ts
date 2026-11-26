@@ -5,6 +5,8 @@
 // - iPhone/iPad (Safari) kennen das nicht: dort zeigt die App eine kurze Anleitung (Teilen → Zum Home-Bildschirm)
 import { useEffect, useState } from "react";
 
+import { istAndroidApp } from "@/lib/app-umgebung";
+
 type InstallEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
 
 let angebot: InstallEvent | null = null;
@@ -22,8 +24,7 @@ export function pwaStarten(): void {
     angebot = null;
     melden();
   });
-  const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
-  if (import.meta.env.PROD && "serviceWorker" in navigator && !cap?.isNativePlatform?.()) {
+  if (import.meta.env.PROD && "serviceWorker" in navigator && !istAndroidApp()) {
     navigator.serviceWorker.register("/sw.js").catch((err) => console.warn("[lens] Service Worker", err));
   }
 }

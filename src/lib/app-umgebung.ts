@@ -1,14 +1,35 @@
 import { useEffect, useState } from "react";
 
-// v22: Laeuft die Seite in der Android-App (Capacitor-Huelle)?
-// Google-Play-Regel (wie PPS Books): in der App keine Links nach draussen zu Kauf-/Produktseiten –
-// der MemberAbo-Link (Upgrade auf Pro) erscheint darum nur im Browser.
-// Server und erster Aufbau: false (Browser) → Suchmaschinen sehen die Links.
+// Läuft die Seite in der Android-App (Hülle lens-android, Capacitor) oder im normalen Browser?
+// v6 (Eric 26.11.: „mach das mal Google-konform“): zwei Merkmale, eins reicht:
+//   1. window.Capacitor.isNativePlatform() – stellt Capacitor in der Hülle bereit
+//   2. „PPSLensAndroid“ im User-Agent – hängt lens-android ab Version 1 an (capacitor.config: appendUserAgent)
+// Wichtig: Beim ersten Aufbau (Server + erste Millisekunden) wissen wir es noch nicht.
+// Dinge, die in der App NICHT erscheinen dürfen (Kauf-Hinweise), zeigen wir darum erst, wenn sicher
+// feststeht „das ist ein Browser“ → useNurImBrowser(). So blitzt in der App nie ein Kauf-Link auf.
+
+export const APP_KENNUNG = "PPSLensAndroid";
+
+export function istAndroidApp(): boolean {
+  if (typeof window === "undefined") return false;
+  const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
+  return !!cap?.isNativePlatform?.() || navigator.userAgent.includes(APP_KENNUNG);
+}
+
+type Umgebung = "unbekannt" | "app" | "browser";
+
+export function useUmgebung(): Umgebung {
+  const [u, setU] = useState<Umgebung>("unbekannt");
+  useEffect(() => setU(istAndroidApp() ? "app" : "browser"), []);
+  return u;
+}
+
+/** true = Android-App (nach dem ersten Aufbau) */
 export function useIstApp(): boolean {
-  const [app, setApp] = useState(false);
-  useEffect(() => {
-    const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
-    setApp(!!cap?.isNativePlatform?.());
-  }, []);
-  return app;
+  return useUmgebung() === "app";
+}
+
+/** true nur, wenn sicher ein normaler Browser – für alles, was in der Android-App versteckt sein muss */
+export function useNurImBrowser(): boolean {
+  return useUmgebung() === "browser";
 }

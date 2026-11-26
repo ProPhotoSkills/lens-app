@@ -3,7 +3,8 @@ import { Crown, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 import { KARTE } from "@/components/rahmen";
-import { useIstApp } from "@/lib/app-umgebung";
+import { ANDROID_OHNE } from "@/lib/android-schalter";
+import { useNurImBrowser } from "@/lib/app-umgebung";
 import { useI18n } from "@/lib/i18n";
 import { PRO_URL, setzeEinwilligung } from "@/lib/lens";
 import { useStand } from "@/lib/stand";
@@ -55,18 +56,19 @@ export function EinwilligungKarte() {
   );
 }
 
-/** Kontingent aufgebraucht – Upgrade-Link nur im Browser (Google-Play-Regel für eine spätere Android-Hülle) */
+/** Kontingent aufgebraucht – MemberAbo-Hinweis + Link nur im Browser (v6: Schalter memberAbo, Google-Play-Regel) */
 export function KontingentKarte({ limit }: { limit: number }) {
   const { t } = useI18n();
-  const app = useIstApp();
+  const browser = useNurImBrowser();
+  const aboZeigen = browser || !ANDROID_OHNE.memberAbo;
   const { stand } = useStand();
   return (
     <div className={`${KARTE} border-amber-300 p-5`}>
       <p className="text-sm text-stone-800">{t("err.kontingent", { l: limit })}</p>
-      {stand?.plan !== "pro" && (
+      {stand?.plan !== "pro" && aboZeigen && (
         <>
           <p className="mt-2 text-sm text-stone-600">{t("err.upgrade")}</p>
-          {!app && (
+          {(
             <a
               href={PRO_URL}
               target="_blank"

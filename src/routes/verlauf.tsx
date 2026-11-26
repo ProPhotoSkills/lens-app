@@ -224,6 +224,10 @@ function DeineDaten({ anzahl, nachLoeschen }: { anzahl: number; nachLoeschen: ()
       )}
       {meldung && <p role="status" className="rounded-md bg-stone-100 px-3 py-2 text-sm text-stone-700">{meldung}</p>}
       <p className="text-xs leading-relaxed text-stone-500">{t("data.account")}</p>
+      {/* v6: Google Play – Konto-Löschung in der App erreichbar */}
+      <Link to="/konto-loeschen" className={`${knopf} border-red-200 bg-white text-red-700 hover:bg-red-50`}>
+        <Trash2 className="h-4 w-4" /> {t("data.deleteAccount")}
+      </Link>
     </div>
   );
 }

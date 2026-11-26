@@ -33,6 +33,9 @@ export function Footer() {
           <Link className="hover:text-foreground" to="/nutzungsbedingungen">
             {t("legal.terms")}
           </Link>
+          <Link className="hover:text-foreground" to="/konto-loeschen">
+            {t("footer.deleteAccount")}
+          </Link>
           <a className="hover:text-foreground" href="mailto:support@prophotoskills.com">
             {t("footer.help")}
           </a>

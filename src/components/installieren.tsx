@@ -1,5 +1,7 @@
 import { Download, Share } from "lucide-react";
 
+import { ANDROID_OHNE } from "@/lib/android-schalter";
+import { useNurImBrowser } from "@/lib/app-umgebung";
 import { useI18n } from "@/lib/i18n";
 import { useInstallation } from "@/lib/pwa";
 
@@ -7,6 +9,9 @@ import { useInstallation } from "@/lib/pwa";
 export function Installieren() {
   const { t } = useI18n();
   const { art, installieren } = useInstallation();
+  const browser = useNurImBrowser();
+  // v6: in der Android-App nie (Schalter appInstallieren) – erst zeigen, wenn sicher Browser
+  if (!browser && ANDROID_OHNE.appInstallieren) return null;
   if (art === "keins") return null;
   if (art === "knopf") {
     return (

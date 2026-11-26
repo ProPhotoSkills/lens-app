@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
+import { useUmgebung } from "@/lib/app-umgebung";
+import { ANDROID_OHNE, APP_TEXTE } from "@/lib/android-schalter";
 import { load, save } from "@/lib/storage";
 
 // Sprachen von PPS Lens – gleiche 8 Flaggen wie Books und prophotoskills.com.
@@ -132,6 +134,11 @@ const de: Dict = {
   "data.revokeConfirm": "Einwilligung widerrufen? Danach kannst du erst wieder Fotos bewerten lassen, wenn du erneut zustimmst.",
   "data.revoked": "Einwilligung widerrufen.",
   "data.account": "Dein Konto gilt für alle ProPhotoSkills-Apps. Möchtest du es ganz löschen, schreib an support@prophotoskills.com – dann werden auch alle Lens-Daten gelöscht.",
+  "data.deleteAccount": "Konto löschen",
+  "report.link": "Bewertung melden (falsch oder unangemessen)",
+  "report.subject": "PPS Lens – Bewertung melden",
+  "report.body": "Diese KI-Bewertung ist falsch oder unangemessen (Bewertungs-ID {id}). Was stimmt nicht?",
+  "footer.deleteAccount": "Konto löschen",
   "notfound.text": "Diese Seite gibt es nicht.",
   "legal.stand": "Stand: {d}",
   "legal.draft": "Entwurf – noch nicht anwaltlich geprüft.",
@@ -283,6 +290,11 @@ const en: Dict = {
   "data.revokeConfirm": "Withdraw consent? You can only have photos reviewed again after agreeing again.",
   "data.revoked": "Consent withdrawn.",
   "data.account": "Your account works for all ProPhotoSkills apps. To delete it completely, write to support@prophotoskills.com – all Lens data will be deleted too.",
+  "data.deleteAccount": "Delete account",
+  "report.link": "Report this review (wrong or inappropriate)",
+  "report.subject": "PPS Lens – report a review",
+  "report.body": "This AI review is wrong or inappropriate (review ID {id}). What is wrong?",
+  "footer.deleteAccount": "Delete account",
   "notfound.text": "This page does not exist.",
   "legal.stand": "As of {d}",
   "legal.draft": "Draft – not yet reviewed by a lawyer.",
@@ -353,8 +365,17 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     save("ppsl_lang", l);
   };
 
+  // v6: In der Android-App gelten Ersatztexte (android-schalter.ts). Solange unklar ist, ob App oder Browser
+  // (erster Aufbau), nehmen wir die App-Texte – so blitzt in der App nie „MemberAbo“ auf.
+  const umgebung = useUmgebung();
+  const appTexte = umgebung !== "browser";
+
   const t = (key: string, vars?: Record<string, string | number>) => {
-    let s = T[lang]?.[key] ?? (lang === "de" ? undefined : en[key]) ?? de[key] ?? key;
+    const ersatz = appTexte ? (APP_TEXTE[lang === "de" ? "de" : "en"][key] ?? undefined) : undefined;
+    let s =
+      ersatz && ANDROID_OHNE[ersatz.schalter]
+        ? ersatz.text
+        : (T[lang]?.[key] ?? (lang === "de" ? undefined : en[key]) ?? de[key] ?? key);
     if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
     return s;
   };

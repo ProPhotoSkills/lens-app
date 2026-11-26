@@ -1,4 +1,4 @@
-# PPS Lens – KI-Foto-Coach (Repo lens-app) · v5
+# PPS Lens – KI-Foto-Coach (Repo lens-app) · v7
 
 Die App PPS Lens von ProPhotoSkills: Foto wählen, von der KI bewerten lassen, Verlauf ansehen.
 Namen wie PPS Books: Repo **lens-app** (wie books-app), Cloudflare-Worker **lens** → https://lens.prophotoskills.workers.dev (wie books → books.prophotoskills.workers.dev). Tor = Repo/Worker **lens-gate** (wie books-gate).
@@ -36,3 +36,12 @@ In einer späteren Android-Hülle kein Kaufknopf und keine Links zu Digistore �
 - `npm install` – einmal
 - `npm run dev` – lokal ansehen (http://localhost:5173)
 - `npm run build` – so baut auch Cloudflare
+
+## v6 – Google-Play-Fassung (Android-Schalter)
+- `src/lib/android-schalter.ts`: was in der Android-App (Hülle lens-android) ausgeblendet ist – MemberAbo, Wort „KI-Coach“, „App installieren“, Lektion-Links. Im Browser ändert sich nichts. Wieder einschalten: Wert auf `false`.
+- App erkannt an `window.Capacitor` oder „PPSLensAndroid“ im User-Agent (`src/lib/app-umgebung.ts`). Kauf-Hinweise erscheinen erst, wenn sicher „Browser“ feststeht – in der App blitzt nichts auf.
+- „Bewertung melden“ unter jeder KI-Bewertung (Mail an Support, Google-Regel für KI-Inhalte).
+- Neue Seite `/konto-loeschen` (Google Play: Konto-Löschung in der App + als Web-Adresse), verlinkt im Verlauf („Deine Daten“) und in der Fußzeile.
+
+## v7 – Korrektur
+- `public/sw.js`: Cache-Name `pps-lens-v7` (in v6 stand versehentlich noch `pps-lens-v5`, Eric 26.11.). Regel: bei jeder neuen Fassung `WEB_VERSION` **und** `CACHE` hochzählen. Sonst wie v6.
