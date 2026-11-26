@@ -138,9 +138,12 @@ function Coach() {
 
   return (
     <Rahmen>
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <Kontingent />
+      {/* v9: Plan + Kontingent als kleiner Kasten oben rechts (Eric 26.11.) */}
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-2">
         <Installieren />
+        <div className="ml-auto">
+          <Kontingent />
+        </div>
       </div>
 
       {standFehler && (
@@ -172,17 +175,17 @@ function Coach() {
           {!foto ? (
             <button
               type="button"
-              disabled={!einwilligung || liest}
+              disabled={!einwilligung || liest || leer}
               onClick={() => eingabe.current?.click()}
               onDragOver={(e) => {
                 e.preventDefault();
-                if (einwilligung) setZiehen(true);
+                if (einwilligung && !leer) setZiehen(true);
               }}
               onDragLeave={() => setZiehen(false)}
               onDrop={(e) => {
                 e.preventDefault();
                 setZiehen(false);
-                if (einwilligung) void waehle(e.dataTransfer.files?.[0]);
+                if (einwilligung && !leer) void waehle(e.dataTransfer.files?.[0]);
               }}
               className={`${KARTE} flex w-full flex-col items-center justify-center gap-3 border-2 border-dashed px-6 py-16 text-center transition disabled:cursor-not-allowed disabled:opacity-60 ${
                 ziehen ? "border-stone-800 bg-[#fffbd1]" : "border-stone-300 hover:border-stone-500"
@@ -191,7 +194,9 @@ function Coach() {
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#f8e800]">
                 <ImagePlus className="h-7 w-7 text-stone-900" />
               </span>
-              <span className="text-base font-semibold text-stone-900">{liest ? t("coach.reading") : t("coach.drop")}</span>
+              <span className="text-base font-semibold text-stone-900">
+                {liest ? t("coach.reading") : !einwilligung ? t("coach.consentFirst") : leer && stand ? t("err.kontingent", { l: stand.limit }) : t("coach.drop")}
+              </span>
               <span className="max-w-md text-sm text-stone-500">{t("coach.local")}</span>
             </button>
           ) : (

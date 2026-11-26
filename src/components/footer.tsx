@@ -19,7 +19,7 @@ export function Footer() {
         <span>
           © 2026 ProPhotoSkills · PPS Lens
           <span className="ml-2 text-xs opacity-60">
-            {app ? `${app} · ` : ""}Web v{WEB_VERSION}
+            {app ? `${app} · ` : ""}Lens v{WEB_VERSION}
           </span>
         </span>
         <nav className="flex flex-wrap gap-4">

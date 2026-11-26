@@ -89,15 +89,17 @@ export function Kontingent() {
   const { stand } = useStand();
   if (!stand) return null;
   const frei = Math.max(0, stand.limit - stand.genutzt);
+  // v9: kleiner Kasten oben rechts (Eric 26.11.: „Free 0 von 3 … rechts hin in einem Block“)
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[11px] ${
-        frei ? "border-stone-300 bg-white/90 text-stone-700" : "border-rose-300 bg-rose-50 text-rose-700"
-      }`}
-    >
-      {stand.plan === "pro" && <Crown className="h-3 w-3" />}
-      {stand.plan === "pro" ? "PRO · " : "FREE · "}
-      {t("quota.left", { n: frei, l: stand.limit })}
-    </span>
+    <div className={`rounded-lg border px-3 py-2 text-right shadow-sm ${frei ? "border-stone-300 bg-white/95" : "border-rose-300 bg-rose-50"}`}>
+      <div className="flex items-center justify-end gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-stone-500">
+        {t("quota.plan")}
+        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[11px] ${stand.plan === "pro" ? "bg-[#f8e800] text-stone-900" : "bg-stone-800 text-white"}`}>
+          {stand.plan === "pro" && <Crown className="h-3 w-3" />}
+          {stand.plan === "pro" ? "PRO" : "FREE"}
+        </span>
+      </div>
+      <div className={`mt-1 text-xs font-medium ${frei ? "text-stone-800" : "text-rose-700"}`}>{t("quota.left", { n: frei, l: stand.limit })}</div>
+    </div>
   );
 }
