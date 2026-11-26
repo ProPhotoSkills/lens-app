@@ -5,7 +5,7 @@
 //   - Anfragen an andere Adressen (lens-gate, Supabase, OpenAI …) fasst er NIE an → keine Fotos, Bewertungen
 //     oder Anmeldedaten im Zwischenspeicher
 // Neue Fassung: CACHE hochzählen, dann werden alte Zwischenspeicher gelöscht.
-const CACHE = "pps-lens-v9";
+const CACHE = "pps-lens-v11";
 const OFFLINE = "/offline"; // Cloudflare liefert offline.html unter /offline aus (ohne .html, sonst Umleitung)
 const VORAB = [OFFLINE, "/icon-192.png", "/icon-512.png", "/favicon-32x32.png", "/assets/photoskills-logo.png"];
 

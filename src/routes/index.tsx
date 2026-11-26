@@ -57,6 +57,14 @@ function Start() {
 
 type Meldung = { art: "fehler" | "ok"; text: string } | { art: "kontingent"; limit: number };
 
+/** 1. des nächsten Monats, z. B. „1. Dezember“ – dann gibt es wieder Bewertungen */
+function naechsterMonat(lang: string): string {
+  const d = new Date();
+  const n = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+  const loc: Record<string, string> = { de: "de-DE", en: "en-GB", fr: "fr-FR", it: "it-IT", es: "es-ES", pt: "pt-PT", el: "el-GR", ja: "ja-JP" };
+  return n.toLocaleDateString(loc[lang] ?? "en-GB", { day: "numeric", month: "long" });
+}
+
 function Coach() {
   const { t, lang } = useI18n();
   const { abmelden } = useAuth();
@@ -146,22 +154,6 @@ function Coach() {
         </div>
       </div>
 
-      {standFehler && (
-        <p className={`${KARTE} mb-5 p-4 text-sm text-red-700`}>{standFehler === "offline" ? t("err.offline") : standFehler === "anmeldung" ? t("err.login") : t("err.generic", { f: standFehler })}</p>
-      )}
-
-      {stand && !einwilligung && (
-        <div className="mb-5 max-w-3xl">
-          <EinwilligungKarte />
-        </div>
-      )}
-
-      {stand && einwilligung && leer && (
-        <div className="mb-5 max-w-3xl">
-          <KontingentKarte limit={stand.limit} />
-        </div>
-      )}
-
       <input
         ref={eingabe}
         type="file"
@@ -172,20 +164,40 @@ function Coach() {
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <div className="min-w-0 space-y-4 lg:col-span-2">
-          {!foto ? (
+          {/* v10: Der Foto-Bereich ist IMMER sichtbar. Geht gerade kein Foto, steht genau hier warum + was zu tun ist
+              (Eric 26.11.: „er zeigt nicht an, dass ich hier was dazuladen kann“) */}
+          {!foto && !stand && !standFehler ? (
+            <div className={`${KARTE} p-6 text-sm text-stone-500`}>{t("hist.loading")}</div>
+          ) : !foto && !stand ? (
+            <div className={`${KARTE} space-y-3 p-5`}>
+              <p className="text-sm text-red-700">
+                {standFehler === "offline" ? t("err.offline") : standFehler === "anmeldung" ? t("err.login") : t("err.generic", { f: standFehler ?? "" })}
+              </p>
+              <button type="button" onClick={() => void laden()} className="inline-flex items-center gap-2 rounded-md bg-stone-800 px-4 py-2 text-sm font-semibold text-white hover:bg-stone-700">
+                <RotateCcw className="h-4 w-4" /> {t("coach.retry")}
+              </button>
+            </div>
+          ) : !foto && !einwilligung ? (
+            <EinwilligungKarte />
+          ) : !foto && leer && stand ? (
+            <div className="space-y-2">
+              <KontingentKarte limit={stand.limit} />
+              <p className="rounded-md bg-white/90 px-3 py-2 text-xs text-stone-600">{t("coach.resetOn", { d: naechsterMonat(lang) })}</p>
+            </div>
+          ) : !foto ? (
             <button
               type="button"
-              disabled={!einwilligung || liest || leer}
+              disabled={liest}
               onClick={() => eingabe.current?.click()}
               onDragOver={(e) => {
                 e.preventDefault();
-                if (einwilligung && !leer) setZiehen(true);
+                setZiehen(true);
               }}
               onDragLeave={() => setZiehen(false)}
               onDrop={(e) => {
                 e.preventDefault();
                 setZiehen(false);
-                if (einwilligung && !leer) void waehle(e.dataTransfer.files?.[0]);
+                void waehle(e.dataTransfer.files?.[0]);
               }}
               className={`${KARTE} flex w-full flex-col items-center justify-center gap-3 border-2 border-dashed px-6 py-16 text-center transition disabled:cursor-not-allowed disabled:opacity-60 ${
                 ziehen ? "border-stone-800 bg-[#fffbd1]" : "border-stone-300 hover:border-stone-500"
@@ -195,7 +207,7 @@ function Coach() {
                 <ImagePlus className="h-7 w-7 text-stone-900" />
               </span>
               <span className="text-base font-semibold text-stone-900">
-                {liest ? t("coach.reading") : !einwilligung ? t("coach.consentFirst") : leer && stand ? t("err.kontingent", { l: stand.limit }) : t("coach.drop")}
+                {liest ? t("coach.reading") : t("coach.drop")}
               </span>
               <span className="max-w-md text-sm text-stone-500">{t("coach.local")}</span>
             </button>

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { GoogleKnopf } from "@/components/google-knopf";
 import { FELD, KNOPF, KontoSeite } from "@/components/konto-seite";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
@@ -50,6 +51,7 @@ function Anmelden() {
   return (
     <KontoSeite titel={vergessen ? t("auth.forgot") : t("auth.title")}>
       <p className="text-sm text-stone-600">{t("auth.hint")}</p>
+      {!vergessen && <GoogleKnopf weiter={weiter} />}
       <form onSubmit={absenden} className="mt-5 space-y-4">
         <label className="block text-sm font-medium text-stone-700">
           {t("auth.email")}

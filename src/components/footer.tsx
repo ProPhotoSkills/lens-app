@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import { cookieEinstellungenOeffnen } from "@/components/cookie-banner";
 import { useI18n } from "@/lib/i18n";
 import { WEB_VERSION, useAppVersion } from "@/lib/version";
 
@@ -33,6 +34,9 @@ export function Footer() {
           <Link className="hover:text-foreground" to="/nutzungsbedingungen">
             {t("legal.terms")}
           </Link>
+          <button type="button" className="hover:text-foreground" onClick={cookieEinstellungenOeffnen}>
+            {t("cookie.settings")}
+          </button>
           <Link className="hover:text-foreground" to="/konto-loeschen">
             {t("footer.deleteAccount")}
           </Link>

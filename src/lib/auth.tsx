@@ -35,6 +35,8 @@ type AuthCtx = {
   registrieren: (r: Registrierung) => Promise<string | null>;
   abmelden: () => Promise<void>;
   passwortVergessen: (email: string) => Promise<string | null>;
+  /** v11: Google (nur wenn GOOGLE_LOGIN an) – leitet zu Google weiter, kommt auf weiter zurück */
+  googleAnmelden: (weiter?: string) => Promise<string | null>;
   neuesPasswort: (passwort: string) => Promise<string | null>;
 };
 
@@ -92,6 +94,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const sb = supabase();
         if (!sb) return "offline";
         const { error } = await sb.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/passwort` });
+        return error ? error.message : null;
+      },
+      googleAnmelden: async (weiter) => {
+        const sb = supabase();
+        if (!sb) return "offline";
+        const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${window.location.origin}${weiter ?? "/"}` } });
         return error ? error.message : null;
       },
       neuesPasswort: async (passwort) => {
