@@ -1,4 +1,4 @@
-# PPS Lens – KI-Foto-Coach (Repo lens-app) · v7
+# PPS Lens – KI-Foto-Coach (Repo lens-app) · v8
 
 Die App PPS Lens von ProPhotoSkills: Foto wählen, von der KI bewerten lassen, Verlauf ansehen.
 Namen wie PPS Books: Repo **lens-app** (wie books-app), Cloudflare-Worker **lens** → https://lens.prophotoskills.workers.dev (wie books → books.prophotoskills.workers.dev). Tor = Repo/Worker **lens-gate** (wie books-gate).
@@ -45,3 +45,6 @@ In einer späteren Android-Hülle kein Kaufknopf und keine Links zu Digistore �
 
 ## v7 – Korrektur
 - `public/sw.js`: Cache-Name `pps-lens-v7` (in v6 stand versehentlich noch `pps-lens-v5`, Eric 26.11.). Regel: bei jeder neuen Fassung `WEB_VERSION` **und** `CACHE` hochzählen. Sonst wie v6.
+
+## v8
+- Startseite: Fehlt die Einwilligung oder ist das Kontingent leer, steht die Karte jetzt direkt beim Foto (vorher nur ganz oben, Knopf blieb ohne Grund grau – Eric 26.11.). Cache `pps-lens-v8`, Web v8.

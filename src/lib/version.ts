@@ -9,7 +9,7 @@
 
 import { useEffect, useState } from "react";
 
-export const WEB_VERSION = "7";
+export const WEB_VERSION = "8";
 
 type Info = { version: string; build: string };
 type CapApp = { getInfo: () => Promise<Info> };

@@ -198,6 +198,15 @@ function Coach() {
             <FotoBuehne src={foto.bild} titel={titel} exif={ergebnis?.exif ?? foto.exif} laeuft={laeuft} markers={ergebnis?.markers} />
           )}
 
+          {/* v8: Grund direkt beim Foto zeigen, warum „Bewerten“ noch nicht geht (Eric 26.11.: Knopf blieb grau, Hinweis stand nur oben) */}
+          {foto && !ergebnis && stand && !einwilligung && <EinwilligungKarte />}
+          {foto && !ergebnis && stand && einwilligung && leer && <KontingentKarte limit={stand.limit} />}
+          {foto && !ergebnis && !stand && (
+            <p className={`${KARTE} p-4 text-sm text-red-700`}>
+              {standFehler === "offline" ? t("err.offline") : standFehler === "anmeldung" ? t("err.login") : standFehler ? t("err.generic", { f: standFehler }) : t("hist.loading")}
+            </p>
+          )}
+
           {foto && !ergebnis && (
             <div className={`${KARTE} space-y-3 p-5`}>
               <label className="flex items-start gap-2.5 text-sm text-stone-800">
