@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 import { useI18n } from "@/lib/i18n";
 import { WEB_VERSION, useAppVersion } from "@/lib/version";
 
@@ -24,9 +26,13 @@ export function Footer() {
           <a className="hover:text-foreground" href={de ? "https://prophotoskills.com/impressum/" : "https://prophotoskills.com/site-notice/"} target="_blank" rel="noreferrer">
             {t("footer.imprint")}
           </a>
-          <a className="hover:text-foreground" href={de ? "https://prophotoskills.com/datenschutz/" : "https://prophotoskills.com/privacy-policy/"} target="_blank" rel="noreferrer">
+          {/* v5: Datenschutz-Hinweise und Nutzungsbedingungen von PPS Lens als eigene Seiten (verlinken weiter auf die PPS-Datenschutzerklärung) */}
+          <Link className="hover:text-foreground" to="/datenschutz">
             {t("footer.privacy")}
-          </a>
+          </Link>
+          <Link className="hover:text-foreground" to="/nutzungsbedingungen">
+            {t("legal.terms")}
+          </Link>
           <a className="hover:text-foreground" href="mailto:support@prophotoskills.com">
             {t("footer.help")}
           </a>

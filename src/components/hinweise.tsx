@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Crown, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
@@ -31,6 +32,11 @@ export function EinwilligungKarte() {
         <ShieldCheck className="h-5 w-5" /> {t("consent.title")}
       </div>
       <p className="mt-2 text-sm leading-relaxed text-stone-700">{t("consent.text")}</p>
+      <p className="mt-2 text-sm text-stone-700">
+        {t("legal.more")}{" "}
+        <Link to="/datenschutz" className="font-semibold underline underline-offset-2">{t("legal.privacy")}</Link> {t("legal.and")}{" "}
+        <Link to="/nutzungsbedingungen" className="font-semibold underline underline-offset-2">{t("legal.terms")}</Link>
+      </p>
       {stand?.version && <p className="mt-1 text-xs text-stone-400">{t("consent.version", { v: stand.version })}</p>}
       <label className="mt-4 flex items-start gap-2.5 text-sm text-stone-800">
         <input type="checkbox" checked={ja} onChange={(e) => setJa(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-stone-800" />

@@ -68,8 +68,12 @@ function Registrieren() {
             <p className="text-xs text-stone-500">
               {t("reg.privacy")}{" "}
               <a href={datenschutz} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-stone-800">
-                {t("footer.privacy")}
-              </a>
+                {t("legal.ppsPrivacy")}
+              </a>{" "}
+              · <Link to="/datenschutz" className="underline underline-offset-2 hover:text-stone-800">{t("legal.privacy")}</Link>
+              <br />
+              {t("reg.terms")}{" "}
+              <Link to="/nutzungsbedingungen" className="underline underline-offset-2 hover:text-stone-800">{t("legal.terms")}</Link>.
             </p>
             {fehler && <p role="status" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{fehler}</p>}
             <button type="submit" disabled={laeuft} className={KNOPF}>

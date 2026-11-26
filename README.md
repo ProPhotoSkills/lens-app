@@ -1,4 +1,4 @@
-# PPS Lens – KI-Foto-Coach (Repo lens-app) · v4
+# PPS Lens – KI-Foto-Coach (Repo lens-app) · v5
 
 Die App PPS Lens von ProPhotoSkills: Foto wählen, von der KI bewerten lassen, Verlauf ansehen.
 Namen wie PPS Books: Repo **lens-app** (wie books-app), Cloudflare-Worker **lens** → https://lens.prophotoskills.workers.dev (wie books → books.prophotoskills.workers.dev). Tor = Repo/Worker **lens-gate** (wie books-gate).
@@ -15,6 +15,9 @@ Aussehen hell wie Books (gelber PPS-Kopf, Heli-Hintergrund, weiße Karten).
 - **v2 – Grafiken**: Markierungen im Foto (Feld `markers` vom Tor ab v3, nummeriert, grün Stärke / rot Problem / gelb Hinweis),
   Histogramm und pixelgenaue Anzeige ausgefressener Lichter / abgesoffener Tiefen (im Browser berechnet),
   Note in Worten, Stärke und größter Hebel, Merksatz, Tipps mit Link zur PPS-Lektion, Skill-Radar + Notenverlauf im Verlauf
+- **v5 – Recht + App**: Seiten `/datenschutz` (Datenschutz-Hinweise PPS Lens) und `/nutzungsbedingungen` – ENTWURF, Anwalt prüft;
+  verlinkt aus Einwilligung, Bildrechte-Haken, Registrieren und Fußzeile. Installierbar (PWA): Lens-Icon, `site.webmanifest`,
+  Service Worker `public/sw.js` (nur eigene statische Dateien, nie Tor/Supabase), Offline-Seite, Knopf „App installieren“ bzw. iPhone-Anleitung
 - **Kontingent**: Free 3 / Pro 300 im Monat (aus dem Tor), Upgrade-Link MemberAbo nur im Browser
 - **Verlauf**: Liste, Detail, einzeln löschen, alle löschen, **Meine Daten herunterladen** (JSON), Einwilligung widerrufen
 - 8 Flaggen: KI antwortet in allen 8 Sprachen; App-Texte vorerst Deutsch + Englisch (andere zeigen Englisch)

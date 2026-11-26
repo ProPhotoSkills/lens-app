@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnmeldenRouteImport } from './routes/anmelden'
+import { Route as DatenschutzRouteImport } from './routes/datenschutz'
+import { Route as NutzungsbedingungenRouteImport } from './routes/nutzungsbedingungen'
 import { Route as PasswortRouteImport } from './routes/passwort'
 import { Route as RegistrierenRouteImport } from './routes/registrieren'
 import { Route as VerlaufRouteImport } from './routes/verlauf'
@@ -23,6 +25,16 @@ const IndexRoute = IndexRouteImport.update({
 const AnmeldenRoute = AnmeldenRouteImport.update({
   id: '/anmelden',
   path: '/anmelden',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatenschutzRoute = DatenschutzRouteImport.update({
+  id: '/datenschutz',
+  path: '/datenschutz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NutzungsbedingungenRoute = NutzungsbedingungenRouteImport.update({
+  id: '/nutzungsbedingungen',
+  path: '/nutzungsbedingungen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswortRoute = PasswortRouteImport.update({
@@ -44,6 +56,8 @@ const VerlaufRoute = VerlaufRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
   '/verlauf': typeof VerlaufRoute
@@ -51,6 +65,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
   '/verlauf': typeof VerlaufRoute
@@ -59,22 +75,47 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/anmelden': typeof AnmeldenRoute
+  '/datenschutz': typeof DatenschutzRoute
+  '/nutzungsbedingungen': typeof NutzungsbedingungenRoute
   '/passwort': typeof PasswortRoute
   '/registrieren': typeof RegistrierenRoute
   '/verlauf': typeof VerlaufRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/anmelden' | '/passwort' | '/registrieren' | '/verlauf'
+  fullPaths:
+    | '/'
+    | '/anmelden'
+    | '/datenschutz'
+    | '/nutzungsbedingungen'
+    | '/passwort'
+    | '/registrieren'
+    | '/verlauf'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/anmelden' | '/passwort' | '/registrieren' | '/verlauf'
+  to:
+    | '/'
+    | '/anmelden'
+    | '/datenschutz'
+    | '/nutzungsbedingungen'
+    | '/passwort'
+    | '/registrieren'
+    | '/verlauf'
   id:
-    '__root__' | '/' | '/anmelden' | '/passwort' | '/registrieren' | '/verlauf'
+    | '__root__'
+    | '/'
+    | '/anmelden'
+    | '/datenschutz'
+    | '/nutzungsbedingungen'
+    | '/passwort'
+    | '/registrieren'
+    | '/verlauf'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnmeldenRoute: typeof AnmeldenRoute
+  DatenschutzRoute: typeof DatenschutzRoute
+  NutzungsbedingungenRoute: typeof NutzungsbedingungenRoute
   PasswortRoute: typeof PasswortRoute
   RegistrierenRoute: typeof RegistrierenRoute
   VerlaufRoute: typeof VerlaufRoute
@@ -94,6 +135,20 @@ declare module '@tanstack/react-router' {
       path: '/anmelden'
       fullPath: '/anmelden'
       preLoaderRoute: typeof AnmeldenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/datenschutz': {
+      id: '/datenschutz'
+      path: '/datenschutz'
+      fullPath: '/datenschutz'
+      preLoaderRoute: typeof DatenschutzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nutzungsbedingungen': {
+      id: '/nutzungsbedingungen'
+      path: '/nutzungsbedingungen'
+      fullPath: '/nutzungsbedingungen'
+      preLoaderRoute: typeof NutzungsbedingungenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/passwort': {
@@ -123,6 +178,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnmeldenRoute: AnmeldenRoute,
+  DatenschutzRoute: DatenschutzRoute,
+  NutzungsbedingungenRoute: NutzungsbedingungenRoute,
   PasswortRoute: PasswortRoute,
   RegistrierenRoute: RegistrierenRoute,
   VerlaufRoute: VerlaufRoute,

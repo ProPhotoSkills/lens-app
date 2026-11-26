@@ -5,6 +5,8 @@ import appCss from "../styles.css?url";
 import { I18nProvider } from "../lib/i18n";
 import { AuthProvider } from "../lib/auth";
 import { StandProvider } from "../lib/stand";
+import { pwaStarten } from "../lib/pwa";
+import { useEffect } from "react";
 import { CookieBanner } from "../components/cookie-banner";
 
 function NotFoundComponent() {
@@ -39,16 +41,30 @@ export const Route = createRootRoute({
       // lens v1: noch nicht für Suchmaschinen freigegeben, bis Eric live geht
       { name: "robots", content: "noindex, nofollow" },
       { name: "theme-color", content: "#f8e800" },
+      // v5: installierbar (PWA) – iPhone/iPad brauchen eigene Angaben
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "Lens" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "application-name", content: "PPS Lens" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon-192.png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
-  component: () => (
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+});
+
+function RootComponent() {
+  useEffect(() => pwaStarten(), []);
+  return (
     <I18nProvider>
       <AuthProvider>
         <StandProvider>
@@ -57,9 +73,8 @@ export const Route = createRootRoute({
         </StandProvider>
       </AuthProvider>
     </I18nProvider>
-  ),
-  notFoundComponent: NotFoundComponent,
-});
+  );
+}
 
 function RootShell({ children }: { children: ReactNode }) {
   return (

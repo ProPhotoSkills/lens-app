@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 
 import { Bewertung, FotoBuehne, HistogrammKarte } from "@/components/ergebnis";
 import { EinwilligungKarte, Kontingent, KontingentKarte } from "@/components/hinweise";
+import { Installieren } from "@/components/installieren";
 import { KARTE, Rahmen } from "@/components/rahmen";
 import { useAuth } from "@/lib/auth";
 import { istBild, vorbereiten, type Vorbereitet } from "@/lib/bild";
@@ -37,6 +38,9 @@ function Start() {
             ))}
           </ul>
           <p className="mt-5 text-xs text-stone-500">{t("start.plans")}</p>
+          <div className="mt-3">
+            <Installieren />
+          </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link to="/anmelden" search={{ weiter: undefined }} className="inline-flex items-center rounded-md bg-stone-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-stone-700">
               {t("auth.login")}
@@ -136,6 +140,7 @@ function Coach() {
     <Rahmen>
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <Kontingent />
+        <Installieren />
       </div>
 
       {standFehler && (
@@ -197,7 +202,10 @@ function Coach() {
             <div className={`${KARTE} space-y-3 p-5`}>
               <label className="flex items-start gap-2.5 text-sm text-stone-800">
                 <input type="checkbox" checked={rechte} onChange={(e) => setRechte(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-stone-800" />
-                <span>{t("coach.rights")}</span>
+                <span>
+                  {t("coach.rights")}{" "}
+                  <Link to="/nutzungsbedingungen" className="text-stone-500 underline underline-offset-2">{t("coach.rightsTerms")}</Link>
+                </span>
               </label>
               <label className="flex items-start gap-2.5 text-sm text-stone-800">
                 <input type="checkbox" checked={thumbMerken} onChange={(e) => setThumbMerken(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-stone-800" />
